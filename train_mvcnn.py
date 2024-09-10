@@ -13,25 +13,18 @@ from tools.Trainer import ModelNetTrainer
 from tools.ImgDataset import MultiviewImgDataset, SingleImgDataset
 from models.MVCNN import MVCNN, SVCNN
 
-# 参数定义
 parser = argparse.ArgumentParser()
-# add_argument() 方法，该方法用于指定程序能够接受哪些命令行选项
-# 当'-'和'--'同时出现的时候，系统默认后者为参数名，前者不是，但是在命令行输入的时候没有这个区分
-# argparse默认的变量名是--或-后面的字符串，但是你也可以通过dest=xxx来设置参数的变量名，然后在代码中用args.xxx来获取参数的值。
 parser.add_argument("-name", "--name", type=str, help="Name of the experiment", default="convnext-001")
 parser.add_argument("-bs", "--batchSize", type=int, help="Batch size for the second stage", default=2)# it will be *12 images in each batch for mvcnn
 parser.add_argument("-num_models", type=int, help="number of models per class", default=1000)
 parser.add_argument("-lr", type=float, help="learning rate", default=0.001)
 parser.add_argument("-weight_decay", type=float, help="weight decay", default=0.01)
-# 当action这一选项存在时，为 args.no_pretraining 赋值为 True。没有指定时则隐含地赋值为 False。
 parser.add_argument("-no_pretraining", dest='no_pretraining', action='store_true')
 parser.add_argument("-cnn_name", "--cnn_name", type=str, help="cnn model name", default="convnext") 
-# 视角数
 parser.add_argument("-num_views", type=int, help="number of views", default=12)
 # change path
 parser.add_argument("-train_path", type=str, default="F:/Pythonproject/project1/data_augment/multiview_skulldata1/*/train1")
 parser.add_argument("-val_path", type=str, default="F:/Pythonproject/project1/data_augment/multiview_skulldata1/*/test")
-# set_defaults()可以设置一些参数的默认值
 parser.set_defaults(train=False)
 
 class CustomSubset1(SingleImgDataset, torch.utils.data.Subset):
@@ -97,11 +90,11 @@ if __name__ == '__main__':
 
     # STAGE 1
     log_dir = args.name+'_stage_1'
-    create_folder(log_dir)#创建保存模型的文件夹
-    # cnet = SVCNN(args.name, gender_classes=2, ethnic_classes=2, pretraining=pretraining, cnn_name=args.cnn_name) #创建单视角训练模型
-    # optimizer = optim.Adam(cnet.parameters(), lr=args.lr, weight_decay=args.weight_decay)# 优化器，需要优化的参数，学习率，学习率衰减系数
+    create_folder(log_dir)
+    # cnet = SVCNN(args.name, gender_classes=2, ethnic_classes=2, pretraining=pretraining, cnn_name=args.cnn_name) 
+    # optimizer = optim.Adam(cnet.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
-    n_models_train = args.num_models*args.num_views #模型训练数
+    n_models_train = args.num_models*args.num_views 
     
     #print(args.train_path)
     train_dataset = SingleImgDataset(args.train_path, scale_aug=False, rot_aug=False, num_models=n_models_train, num_views=args.num_views)
