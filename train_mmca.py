@@ -11,7 +11,6 @@ import torch.nn.functional as F
 
 from tools.Trainer import ModelNetTrainer
 from tools.ImgDataset import MultiviewImgDataset, SingleImgDataset
-from models.MVCNN import MVCNN, SVCNN
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-name", "--name", type=str, help="Name of the experiment", default="convnext-001")
